@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor.VersionControl;
+#endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
@@ -34,7 +38,6 @@ public class CubeController : MonoBehaviour
                 tempCube.transform.position = new Vector3(4.5f, i + 0.5f, zPosition);
             }
         }
-        PoolManager.GetGameObjectFromPool(CubePrefab);
     }    
     // Update is called once per frame
     void Update()
@@ -42,6 +45,16 @@ public class CubeController : MonoBehaviour
         if (PoolManager.poolsDictionary[CubePrefab.name].Count >= 8)
         {
             SpawnColumOnCenterWithTwoHole(metalBall.transform.position.z + 200);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //MainCamera.GetComponent<AudioManager>().PlaySound(OnLostHpSound);
+        if (other.gameObject.name == "Green Cube")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
         }
     }
 }
